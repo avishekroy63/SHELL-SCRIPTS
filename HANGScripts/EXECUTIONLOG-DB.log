@@ -1,0 +1,191 @@
+
+----------------------------
+1. SCENARIO1 - DBConn == NOK
+----------------------------
+
+[test@testapp hang]$ sh -x hang1.sh 
+++ ps auxw
+++ grep tomcat7_web
+++ grep -v grep
+++ wc -l
++ stack1=1
+++ date +%s
++ now=1524730348
+++ ps -eaf
+++ grep java
+++ grep -v grep
+++ awk '/tomcat7_web/ {print $2}'
++ pid=15454
++ echo 1524730348
+1524730348
++ echo 1
+1
++ '[' 1 == 0 ']'
++ echo 'INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR DB CONNECTIONS'
+INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR DB CONNECTIONS
+++ netstat -anp
+++ grep 15454/java
+++ grep 1908
+++ grep ESTABLISHED
+++ wc -l
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
++ DBConnections=226
++ '[' 226 -lt 200 ']'
+++ stat -c %Y /proc/15454
++ UPTIME=1524564177
++ DIFF=166171
++ echo 166171
+166171
++ '[' 166171 -gt 1800 ']'
++ echo 'Services Seems DOWN'
+Services Seems DOWN
++ echo 'Going to start  SERVICES'
+Going to start  SERVICES
++ cd /home/test/tomcat7_web/bin
++ kill -9 15454
++ ./mobiquityStart.sh
++ echo 'WEB STARTED AT '
++ sleep 120
+++ netstat -an
+++ grep 1908
+++ grep ESTABLISHED
+++ wc -l
++ DBConn=247
++ echo 'CURRENT NUMBER OF DB CONNECTIONS : $ DBConn'
+CURRENT NUMBER OF DB CONNECTIONS : $ DBConn
++ sleep 60
+[test@testapp hang]$ ps -eaf | grep -i web
+test     23589     1 23 08:12 pts/2    00:00:46 /home/test/MOBIQUITY_WEB_JAVA/bin/java -Djava.util.logging.config.file=/home/test/tomcat7_web/conf/logging.properties -Xms3072m -Xmx3072m -XX:NewSize=256m -XX:MaxNewSize=512m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseGCOverheadLimit -XX:+UseParallelGC -XX:ParallelGCThreads=10 -Xloggc:/mmoneyvar/mmoney_weblogs/gc_heapdump_28.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -XX:+PrintTenuringDistribution -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/mmoneyvar/mmoney_weblogs/ -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/home/test/tomcat7_web/endorsed -classpath /home/test/tomcat7_web/bin/bootstrap.jar:/home/test/tomcat7_web/bin/tomcat-juli.jar -Dcatalina.base=/home/test/tomcat7_web -Dcatalina.home=/home/test/tomcat7_web -Djava.io.tmpdir=/home/test/tomcat7_web/temp org.apache.catalina.startup.Bootstrap start
+test     24032 23313  0 08:15 pts/2    00:00:00 grep -i web
+
+
+-------------------------------
+2. SCENARIO2 - UPTIME < 30MINS
+-------------------------------
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ less logs/txnservicehang.log 
+[test@testapp hang]$ sh -x hang1.sh 
+++ ps auxw
+++ grep tomcat7_web
+++ grep -v grep
+++ wc -l
++ stack1=1
+++ date +%s
++ now=1524730667
+++ ps -eaf
+++ grep java
+++ grep -v grep
+++ awk '/tomcat7_web/ {print $2}'
++ pid=23589
++ echo 1524730667
+1524730667
++ echo 1
+1
++ '[' 1 == 0 ']'
++ echo 'INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR DB CONNECTIONS'
+INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR DB CONNECTIONS
+++ netstat -anp
+++ grep 23589/java
+++ grep 1908
+++ grep ESTABLISHED
+++ wc -l
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
++ DBConnections=226
++ '[' 226 -lt 200 ']'
+++ stat -c %Y /proc/23589
++ UPTIME=1524730349
++ DIFF=318
++ echo 318
+318
++ '[' 318 -gt 1800 ']'
++ echo 'PROCESS UPTIME IS LESS THAN 30MINS -> NO ACTION REQUIRED'
+PROCESS UPTIME IS LESS THAN 30MINS -> NO ACTION REQUIRED
+
+
+
+
+----------------------------
+1. SCENARIO3 - DBConn == OK
+----------------------------
+[test@testapp hang]$ ps -eaf | grep java | grep -i web
+test      7626     1  7 06:58 pts/0    00:00:58 /home/test/MOBIQUITY_WEB_JAVA/bin/java -Djava.util.logging.config.file=/home/test/tomcat7_web/conf/logging.properties -Xms3072m -Xmx3072m -XX:NewSize=256m -XX:MaxNewSize=512m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseGCOverheadLimit -XX:+UseParallelGC -XX:ParallelGCThreads=10 -Xloggc:/mmoneyvar/mmoney_weblogs/gc_heapdump_28.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -XX:+PrintTenuringDistribution -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/mmoneyvar/mmoney_weblogs/ -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/home/test/tomcat7_web/endorsed -classpath /home/test/tomcat7_web/bin/bootstrap.jar:/home/test/tomcat7_web/bin/tomcat-juli.jar -Dcatalina.base=/home/test/tomcat7_web -Dcatalina.home=/home/test/tomcat7_web -Djava.io.tmpdir=/home/test/tomcat7_web/temp org.apache.catalina.startup.Bootstrap start
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ sh -x hang1.sh 
+++ ps auxw
+++ grep tomcat7_web
+++ grep -v grep
+++ wc -l
++ stack1=1
+++ date +%s
++ now=1524813044
+++ date +%F
++ DATE=2018-04-27
+++ ps -eaf
+++ grep java
+++ grep -v grep
+++ awk '/tomcat7_web/ {print $2}'
++ pid=7626
++ echo 1524813044
+1524813044
++ echo 1
+1
++ '[' 1 == 0 ']'
++ echo 'INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR DB CONNECTIONS'
+INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR DB CONNECTIONS
+++ netstat -anp
+++ grep 7626/java
+++ grep 1908
+++ grep ESTABLISHED
+++ wc -l
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
++ DBConnections=226
++ '[' 226 -gt 0 ']'
++ echo 'SEEMS DB CONNECTIONS EXISTS -> NO ACTION REQUIRED'
+SEEMS DB CONNECTIONS EXISTS -> NO ACTION REQUIRED
+
+
+-----------------------------------
+4. SCENARIO4 - INSTANCE NOT RUNNING
+-----------------------------------
+
+[test@testapp hang]$ kill -9 7626
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ ps -eaf | grep -i java | grep -i web
+[test@testapp hang]$ 
+[test@testapp hang]$ sh -x hang1.sh 
+++ ps auxw
+++ grep tomcat7_web
+++ grep -v grep
+++ wc -l
++ stack1=0
+++ date +%s
++ now=1524813157
+++ date +%F
++ DATE=2018-04-27
+++ ps -eaf
+++ grep java
+++ grep -v grep
+++ awk '/tomcat7_web/ {print $2}'
++ pid=
++ echo 1524813157
+1524813157
++ echo 0
+0
++ '[' 0 == 0 ']'
++ echo 'INTANCE NOT RUNNING NO ACTION REQUIRED'
+INTANCE NOT RUNNING NO ACTION REQUIRED
+
+

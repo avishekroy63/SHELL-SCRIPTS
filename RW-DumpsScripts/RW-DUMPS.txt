@@ -1,0 +1,151 @@
+1)	Heap dump –  1 dump each night at offpeak hours for 3 to 4 days.
+
+[VIKAAS] Include the dump option “live”. Eg: jmap -dump:live,format=b,file=xxx
+
+2)	netstat – Once in a hour.
+
+[VIKAAS] Two variants are required.  Please include date and time along with sample collection
+•	netstat -anp 
+•	netstat -s
+
+[VIKAAS] Let us capture some additional data
+•	jmap -histo:live (once every day at offpeak along with dump)
+
+
+
+3)	lsof       - Once in a hour.
+
+[VIKAAS] lsof is required only for the process concerned.  Please use the options “lsof -n -P -p <pid>”
+
+•	nstat (once every hour
+
+6)	ss --summary – Once a day.
+
+
+)
+•	cat /proc/net/bonding/bond*  (once only)
+
+
+
+4)	jstat     - Once in 5 mins (one day log in one file).
+
+[VIKAAS] Need to capture under different options “gcutil”, “gccapacity”, “gcoldcapacity” 
+
+5)	jstack -l - Once in 4 hours.
+
+
+=============
+HOURLY SCRIPT
+=============
+
+!#/bin/bash
+daily=`date | cut -d ' ' -f 3`
+hour=`date | cut -d ' ' -f 4 | cut -d ':' -f1`
+echo "Capturing Netstat"
+netstat -anp > /mmoneyvar/dumps/netstat_$daily_$hour.log && echo "netstat is captured" >> /mmoneyvar/dumps/netstat_$daily_$hour.log 2>&1
+netstat -s >> /mmoneyvar/dumps/netstat_$daily_$hour.log && echo "netstat -s is captured" >> /mmoneyvar/dumps/netstat_$daily_$hour.log 2>&1
+
+process=`ps -eaf | grep java | grep -v grep | awk '/muleTomcat_3.8-EIG/ {print $2}`
+
+lsof -n -P -p $process > /mmoneyvar/dumps/lsof_$daily_$hour.log && echo "lsof is captured" >> /mmoneyvar/dumps/lsof_$daily_$hour.log 2>&1
+
+nstat >> /mmoneyvar/dumps/nstat_$daily_$hour.log && echo "nstat -s is captured" >> /mmoneyvar/dumps/nstat_$daily_$hour.log 2>&1
+
+
+============
+DAILY SCRIPT
+============
+
+!#/bin/bash
+daily=`date | cut -d ' ' -f 3`
+month=`date | cut -d ' ' -f 2`
+ss --sumary > /mmoneyvar/dumps/sssummary_$daily_$month.log && echo "ss summary is captured" >> /mmoneyvar/dumps/summary_$daily_$month.log 2>&1
+top -n 1 -b > /mmoneyvar/dumps/top_$daily_$month.log && echo "top is captured" >> /mmoneyvar/dumps/top_$daily_$month.log 2>&1
+
+process=`ps -eaf | grep java | grep -v grep | awk '/muleTomcat_3.8-EIG/ {print $2}`
+
+/usr/bin/jdk1.6.0_29/bin/jmap -dump:live,format=b,file=/mmoneyvar/dumps/heap_web_$daily_$month.bin $process
+
+/usr/java/jdk1.7.0_79/bin/jmap -histo:live $process > mmoneyvar/dumps/jmap_histo_$daily_$month.log 2>&1
+
+======
+5 MINS
+======
+
+jstat >> 
+
+
+
+
+=====
+JSTAT
+=====
+
+#cd ABSOLUTE_PATHE_OF_CRONJOB
+cd /mmoneyvar/dumps
+
+NOWDATE=$(date +"%F")
+LOG_FILE_NAME="daily/jstat-$NOWDATE.log"
+echo "*************************************" >> $LOG_FILE_NAME
+echo "Starting the schedule process in cron" >> $LOG_FILE_NAME
+echo "*************************************" >> $LOG_FILE_NAME
+echo "The current time is:" >> $LOG_FILE_NAME
+date >> $LOG_FILE_NAME
+process=`ps -eaf | grep java | grep -v grep | awk '/muleTomcat_3.8-EIG/ {print $2}'`
+echo "gcutil" >> $LOG_FILE_NAME
+jstat -gcutil $process >> $LOG_FILE_NAME
+echo "gccapacity" >> $LOG_FILE_NAME
+jstat -gccapacity $process >> $LOG_FILE_NAME
+echo "gcoldcapacity" >> $LOG_FILE_NAME
+jstat -gcoldcapacity $process >> $LOG_FILE_NAME
+
+echo "*************************************" >> $LOG_FILE_NAME
+echo "End of the schedule process in cron  " >> $LOG_FILE_NAME
+echo "*************************************" >> $LOG_FILE_NAME
+echo "The current time is:"  >> $LOG_FILE_NAME
+date  >> $LOG_FILE_NAME
+cd
+
+======
+JSTACK
+======
+
+#cd ABSOLUTE_PATHE_OF_CRONJOB
+cd /mmoneyvar/dumps
+
+NOWDATE=$(date +"%F")
+LOG_FILE_NAME="daily/jstack-$NOWDATE.log"
+echo "*************************************" >> $LOG_FILE_NAME
+echo "Starting the schedule process in cron" >> $LOG_FILE_NAME
+echo "*************************************" >> $LOG_FILE_NAME
+echo "The current time is:" >> $LOG_FILE_NAME
+date >> $LOG_FILE_NAME
+process=`ps -eaf | grep java | grep -v grep | awk '/muleTomcat_3.8-EIG/ {print $2}'`
+echo "jstack" >> $LOG_FILE_NAME
+jstack -l $process >> $LOG_FILE_NAME
+
+echo "*************************************" >> $LOG_FILE_NAME
+echo "End of the schedule process in cron  " >> $LOG_FILE_NAME
+echo "*************************************" >> $LOG_FILE_NAME
+echo "The current time is:"  >> $LOG_FILE_NAME
+date  >> $LOG_FILE_NAME
+cd
+
+
+*/5 * * * * /bin/sh /mmoneyvar/dumps/jstat.sh >> /mmoneyvar/dumps/others/jstat.log
+
+0 */4 * * * /bin/sh /mmoneyvar/dumps/jstack.sh >> /mmoneyvar/dumps/others/jstack.log
+
+0 * * * * /bin/sh /mmoneyvar/dumps/hourly_main.sh >> /mmoneyvar/dumps/others/hourly_main.sh.log
+
+10 01 * * * /bin/sh /mmoneyvar/dumps/daily_main.sh >> /mmoneyvar/dumps/others/daily_main.log
+
+6- SIMS CR TRANSACTIONS
+
+JAN 1ST TILL DATE
+
+DR - JAN30 
+
+
+
+

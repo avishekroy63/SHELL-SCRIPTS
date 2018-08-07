@@ -1,0 +1,203 @@
+-----------------------------
+1. SCENARIO1 - CURLSTATUS==OK
+-----------------------------
+
+[test@testapp hang]$ ps -eaf | grep java | grep -i web
+test     31823     1  0 Apr26 ?        00:11:18 /home/test/MOBIQUITY_WEB_JAVA/bin/java -Djava.util.logging.config.file=/home/test/tomcat7_web/conf/logging.properties -Xms3072m -Xmx3072m -XX:NewSize=256m -XX:MaxNewSize=512m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseGCOverheadLimit -XX:+UseParallelGC -XX:ParallelGCThreads=10 -Xloggc:/mmoneyvar/mmoney_weblogs/gc_heapdump_28.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -XX:+PrintTenuringDistribution -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/mmoneyvar/mmoney_weblogs/ -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/home/test/tomcat7_web/endorsed -classpath /home/test/tomcat7_web/bin/bootstrap.jar:/home/test/tomcat7_web/bin/tomcat-juli.jar -Dcatalina.base=/home/test/tomcat7_web -Dcatalina.home=/home/test/tomcat7_web -Djava.io.tmpdir=/home/test/tomcat7_web/temp org.apache.catalina.startup.Bootstrap start
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ sh -x hang2.sh 
+++ grep -v grep
+++ grep tomcat7_web
+++ ps auxw
+++ wc -l
++ stack1=1
+++ date +%s
++ now=1524809762
+++ date +%F
++ DATE=2018-04-27
+++ ps -eaf
+++ grep java
+++ grep -v grep
+++ awk '/tomcat7_web/ {print $2}'
++ pid=31823
++ echo 1524809762
+1524809762
++ echo 1
+1
++ '[' 1 == 0 ']'
++ echo 'INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR CURL OUTPUT'
+INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR CURL OUTPUT
+++ curl https://172.26.114.245:5555/AirtelMoney -k -s -f -o /dev/null
+++ echo SUCCESS
++ CURLSTATUS=SUCCESS
++ '[' SUCCESS == SUCCESS ']'
++ echo 'SEEMS CURL STATUS IS FINE -> NO ACTION REQUIRED'
+SEEMS CURL STATUS IS FINE -> NO ACTION REQUIRED
+
+
+
+-----------------------------------
+2. SCENARIO2 - INSTANCE NOT RUNNING
+-----------------------------------
+[test@testapp hang]$ kill -9 31823
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ ps -eaf | grep java | grep -i web
+[test@testapp hang]$ sh -x hang2.sh 
+++ ps auxw
+++ grep tomcat7_web
+++ grep -v grep
+++ wc -l
++ stack1=0
+++ date +%s
++ now=1524809917
+++ date +%F
++ DATE=2018-04-27
+++ ps -eaf
+++ grep java
+++ grep -v grep
+++ awk '/tomcat7_web/ {print $2}'
++ pid=
++ echo 1524809917
+1524809917
++ echo 0
+0
++ '[' 0 == 0 ']'
++ echo 'INTANCE NOT RUNNING NO ACTION REQUIRED'
+INTANCE NOT RUNNING NO ACTION REQUIRED
+[test@testapp hang]$ 
+
+INTANCE NOT RUNNING NO ACTION REQUIRED
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ ps -eaf | grep java | grep -i web
+[test@testapp hang]$ 
+
+-------------------------------
+3. SCENARIO3 - UPTIME < 30MINS
+-------------------------------
+[test@testapp bin]$ ps -eaf | grep java | grep -i web
+test      5216     1 24 06:20 pts/0    00:00:45 /home/test/MOBIQUITY_WEB_JAVA/bin/java -Djava.util.logging.config.file=/home/test/tomcat7_web/conf/logging.properties -Xms3072m -Xmx3072m -XX:NewSize=256m -XX:MaxNewSize=512m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseGCOverheadLimit -XX:+UseParallelGC -XX:ParallelGCThreads=10 -Xloggc:/mmoneyvar/mmoney_weblogs/gc_heapdump_28.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -XX:+PrintTenuringDistribution -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/mmoneyvar/mmoney_weblogs/ -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/home/test/tomcat7_web/endorsed -classpath /home/test/tomcat7_web/bin/bootstrap.jar:/home/test/tomcat7_web/bin/tomcat-juli.jar -Dcatalina.base=/home/test/tomcat7_web -Dcatalina.home=/home/test/tomcat7_web -Djava.io.tmpdir=/home/test/tomcat7_web/temp org.apache.catalina.startup.Bootstrap start
+[test@testapp bin]$ 
+[test@testapp bin]$ 
+[test@testapp bin]$ cd -
+/home/test/tomcat7_web
+[test@testapp tomcat7_web]$ cd /mmoneyvar/hang/
+[test@testapp hang]$ ls
+hang1_scenario2.sh  hang1.sh  hang2.sh  logs
+[test@testapp hang]$ ls -lrth logs/
+total 4.0K
+-rw-r-----. 1 test test 58 Apr 26 10:02 txnservicehang.log
+[test@testapp hang]$ vi hang2.sh 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ 
+[test@testapp hang]$ sh -x hang2.sh 
+++ ps auxw
+++ grep tomcat7_web
+++ grep -v grep
+++ wc -l
++ stack1=1
+++ date +%s
++ now=1524810363
+++ date +%F
++ DATE=2018-04-27
+++ ps -eaf
+++ grep java
+++ grep -v grep
+++ awk '/tomcat7_web/ {print $2}'
++ pid=5216
++ echo 1524810363
+1524810363
++ echo 1
+1
++ '[' 1 == 0 ']'
++ echo 'INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR CURL OUTPUT'
+INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR CURL OUTPUT
+++ curl https://172.26.114.245:5554/AirtelMoney -k -s -f -o /dev/null
+++ echo ERROR
++ CURLSTATUS=ERROR
++ '[' ERROR == SUCCESS ']'
+++ stat -c %Y /proc/5216
++ UPTIME=1524810044
++ DIFF=319
++ echo 319
+319
++ '[' 319 -gt 1800 ']'
++ echo 'PROCESS UPTIME IS LESS THAN 30MINS -> NO ACTION REQUIRED'
+PROCESS UPTIME IS LESS THAN 30MINS -> NO ACTION REQUIRED
+
+
+
+------------------------------
+4. SCENARIO4 - CURLSTATUS==NOK
+------------------------------
+
+
+[test@testapp hang]$ ps -eaf | grep java | grep -i web
+test      5216     1  3 06:20 pts/0    00:01:15 /home/test/MOBIQUITY_WEB_JAVA/bin/java -Djava.util.logging.config.file=/home/test/tomcat7_web/conf/logging.properties -Xms3072m -Xmx3072m -XX:NewSize=256m -XX:MaxNewSize=512m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseGCOverheadLimit -XX:+UseParallelGC -XX:ParallelGCThreads=10 -Xloggc:/mmoneyvar/mmoney_weblogs/gc_heapdump_28.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -XX:+PrintTenuringDistribution -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/mmoneyvar/mmoney_weblogs/ -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/home/test/tomcat7_web/endorsed -classpath /home/test/tomcat7_web/bin/bootstrap.jar:/home/test/tomcat7_web/bin/tomcat-juli.jar -Dcatalina.base=/home/test/tomcat7_web -Dcatalina.home=/home/test/tomcat7_web -Djava.io.tmpdir=/home/test/tomcat7_web/temp org.apache.catalina.startup.Bootstrap start
+[test@testapp hang]$ date
+Fri Apr 27 06:57:45 GMT 2018
+[test@testapp hang]$ sh -x hang2.sh 
+++ ps auxw
+++ grep tomcat7_web
+++ grep -v grep
+++ wc -l
++ stack1=1
+++ date +%s
++ now=1524812284
+++ date +%F
++ DATE=2018-04-27
+++ ps -eaf
+++ grep java
+++ grep -v grep
+++ awk '/tomcat7_web/ {print $2}'
++ pid=5216
++ echo 1524812284
+1524812284
++ echo 1
+1
++ '[' 1 == 0 ']'
++ echo 'INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR CURL OUTPUT'
+INSTANCE IS RUNNING -> STACK WILL NOW CHECK FOR CURL OUTPUT
+++ curl https://172.26.114.245:5554/AirtelMoney -k -s -f -o /dev/null
+++ echo ERROR
++ CURLSTATUS=ERROR
++ '[' ERROR == SUCCESS ']'
+++ stat -c %Y /proc/5216
++ UPTIME=1524810044
++ DIFF=2240
++ echo 2240
+2240
++ '[' 2240 -gt 1800 ']'
++ echo 'Services Seems DOWN'
+Services Seems DOWN
++ echo 'Going to start  SERVICES'
+Going to start  SERVICES
++ cd /home/test/tomcat7_web/bin
++ kill -9 5216
++ ./mobiquityStart.sh
++ echo 'WEB STARTED AT 2018-04-27'
++ echo 'WEB STARTED AT 2018-04-27'
++ sleep 120
+++ netstat -an
+++ wc -l
+++ grep 1908
+++ grep ESTABLISHED
++ DBConn=247
++ echo ERROR
+ERROR
++ echo 'CURRENT NUMBER OF DB CONNECTIONS : 247'
+CURRENT NUMBER OF DB CONNECTIONS : 247
++ sleep 60
+[test@testapp hang]$ ps -eaf | grep java | grep -i web
+test      7626     1 21 06:58 pts/0    00:00:47 /home/test/MOBIQUITY_WEB_JAVA/bin/java -Djava.util.logging.config.file=/home/test/tomcat7_web/conf/logging.properties -Xms3072m -Xmx3072m -XX:NewSize=256m -XX:MaxNewSize=512m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+UseGCOverheadLimit -XX:+UseParallelGC -XX:ParallelGCThreads=10 -Xloggc:/mmoneyvar/mmoney_weblogs/gc_heapdump_28.log -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintHeapAtGC -XX:+PrintTenuringDistribution -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/mmoneyvar/mmoney_weblogs/ -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.endorsed.dirs=/home/test/tomcat7_web/endorsed -classpath /home/test/tomcat7_web/bin/bootstrap.jar:/home/test/tomcat7_web/bin/tomcat-juli.jar -Dcatalina.base=/home/test/tomcat7_web -Dcatalina.home=/home/test/tomcat7_web -Djava.io.tmpdir=/home/test/tomcat7_web/temp org.apache.catalina.startup.Bootstrap start
+[test@testapp hang]$ 
+
